@@ -1,14 +1,14 @@
-import { InferModel } from 'drizzle-orm';
+import { InferModel } from 'drizzle-orm-pg';
 import { pgTable, serial, varchar } from 'drizzle-orm-pg';
 
 export const studentTable = pgTable('users', {
   id: serial('ID').primaryKey(),
-  name: varchar('name', 255),
-  registration: varchar('registration', 255),
-  period: varchar('period', 255),
-  course: varchar('course', 255),
-  email: varchar('email', 255),
-  role: varchar('role', 255)
+  name: varchar('name', { length: 255 }),
+  registration: varchar('registration', { length: 255 }),
+  period: varchar('period', { length: 255 }),
+  course: varchar('course', { length: 255 }),
+  email: varchar('email', { length: 255 }),
+  role: varchar('role', { length: 255 })
 });
 
 export type User = InferModel<typeof studentTable>;

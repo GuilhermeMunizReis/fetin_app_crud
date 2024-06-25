@@ -1,39 +1,84 @@
 import { Request, Response } from 'express';
-import { db } from '../db';
-import { studentTable, User } from '../models/User';
+import { query } from '../db';
+import { User } from '../models/User';
 
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
-  const users = await db.select().from(studentTable).execute();
-  res.json(users);
-};
-/*
-export const createUser = async (req: Request, res: Response): Promise<void> => {
-  const { name, email } = req.body;
-  const newUser: User = { name, email };
-  const result = await db.insert(studentTable).values(newUser).execute();
-  res.status(201).json(result);
-};
-*/
-export const getUserById = async (req: Request, res: Response): Promise<void> => {
-  const user = await db.select().from(studentTable).where(studentTable.id.eq(parseInt(req.params.id))).execute();
-  if (user.length > 0) {
-    res.json(user[0]);
-  } else {
-    res.status(404).send('User not found');
+  const result = await query('SELECT * FROM users');
+  const users: User[] = result.rows;
+  if (result != null){
+    res.status(200).json(users);
+  if (result == null) {
+    res.status(500).json({ error: 'Failed to fetch users' });
+    console.log("passei aqui")
+  }
   }
 };
 
-/*
-export const updateUser = async (req: Request, res: Response): Promise<void> => {
-  const { id } = req.params;
-  const { name, email } = req.body;
-  const result = await db.update(studentTable).set({ name, email }).where(studentTable.id.eq(parseInt(id))).execute();
-  res.json(result);
+export const createUser = async (req: Request, res: Response): Promise<void> => {
+  // const { name, registration, period, course, email, role } = req.body;
+  // const newUser: User = { id,name, registration, period, course, email, role };
+
+  // try {
+  //   const insertQuery = `
+  //     INSERT INTO users (name, registration, period, course, email, role)
+  //     VALUES ($1, $2, $3, $4, $5, $6)
+  //     RETURNING *`;
+  //   const result = await query(insertQuery, [newUser.name, newUser.registration, newUser.period, newUser.course, newUser.email, newUser.role]);
+  //   res.status(201).json(result.rows[0]);
+  // } catch (error) {
+  //   res.status(500).json({ error: 'Failed to create user' });
+  // }
+
+  console.log("passei aqui")
 };
-*/
-/*
-export const deleteUser = async (req: Request, res: Response): Promise<void> => {
-  await db.deleteFrom(studentTable).where(studentTable.id.eq(parseInt(req.params.id))).execute();
-  res.status(204).send();
-};
-*/
+
+// export const getUserById = async (req: Request, res: Response): Promise<void> => {
+//   const userId = parseInt(req.params.id);
+
+//   try {
+//     const selectQuery = 'SELECT * FROM users WHERE id = $1';
+//     const result = await query(selectQuery, [userId]);
+
+//     if (result.rows.length > 0) {
+//       res.json(result.rows[0]);
+//     } else {
+//       res.status(404).send('User not found');
+//     }
+//   } catch (error) {
+//     res.status(500).json({ error: 'Failed to fetch user' });
+//   }
+// };
+
+// export const updateUser = async (req: Request, res: Response): Promise<void> => {
+//   const userId = parseInt(req.params.id);
+//   const { name, registration, period, course, email, role } = req.body;
+
+//   try {
+//     const updateQuery = `
+//       UPDATE users SET
+//         name = $1,
+//         registration = $2,
+//         period = $3,
+//         course = $4,
+//         email = $5,
+//         role = $6
+//       WHERE id = $7
+//       RETURNING *`;
+//     const result = await query(updateQuery, [name, registration, period, course, email, role, userId]);
+//     res.json(result.rows[0]);
+//   } catch (error) {
+//     res.status(500).json({ error: 'Failed to update user' });
+//   }
+// };
+
+// export const deleteUser = async (req: Request, res: Response): Promise<void> => {
+//   const userId = parseInt(req.params.id);
+
+//   try {
+//     const deleteQuery = 'DELETE FROM users WHERE id = $1';
+//     await query(deleteQuery, [userId]);
+//     res.status(204).send();
+//   } catch (error) {
+//     res.status(500).json({ error: 'Failed to delete user' });
+//   }
+// };
