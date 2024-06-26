@@ -1,6 +1,6 @@
 import { Pool } from 'pg';
 
-const pool = new Pool({
+export const pool = new Pool({
   host: 'ep-mute-cake-a44fzubt-pooler.us-east-1.aws.neon.tech',
   user: 'default',
   password: 'SVe9tNDQbGT8',
