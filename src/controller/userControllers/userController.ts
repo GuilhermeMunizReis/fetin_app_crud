@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { query } from '../db';
-import { User } from '../models/User';
+import { query } from '../../db';
+import { User } from '../../models/User';
 
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
   const result = await query('SELECT * FROM fetin_app."Student"');
