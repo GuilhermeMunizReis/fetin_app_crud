@@ -19,11 +19,11 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const getUserByName = async (req: Request, res: Response): Promise<void> => {
-  const userName: string = req.params.name; 
+export const getUserById = async (req: Request, res: Response): Promise<void> => {
+  const userName: string = req.params.id; 
   const selectQuery = `
   SELECT name FROM fetin_app."Student" 
-  WHERE name = '{$1}'
+  WHERE ID = '{$1}'
   `;
 
   try {
@@ -42,8 +42,11 @@ export const getUserByName = async (req: Request, res: Response): Promise<void> 
 };
 
 export const getStudentTeam = async (req: Request, res: Response): Promise<void> => {
+  const id: string = req.params.id; 
+  const selectQuery = 'SELECT a.* FROM fetin_app."Student" a JOIN fetin_app."StudentsInTeam" b ON b.team_id = $1 AND a."ID" = b.student_id ORDER BY a.name';
   try {
-    const result = await query('SELECT a.* FROM fetin_app."Student" a JOIN fetin_app."StudentsInTeam" b ON b.team_id = 1 AND a."ID" = b.student_id ORDER BY a.name');
+    
+    const result = await query(selectQuery,[id])
     const users: User[] = result.rows;
 
     if (users.length > 0) {
@@ -73,3 +76,21 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
+export const getTeamsFrUsers = async (req: Request, res: Response): Promise<void> => {
+  const id: string = req.params.id; 
+  const selectQuery = 'SELECT DISTINCT t.* FROM fetin_app."Student" s JOIN fetin_app."StudentsInTeam" a ON s."ID" = a.student_id AND s."ID" = $1 JOIN fetin_app."Team" t ON a.team_id = t."ID" ORDER BY t.project_name';
+  try {
+    
+    const result = await query(selectQuery,[id])
+    const users: User[] = result.rows;
+
+    if (users.length > 0) {
+      res.status(200).json(users);
+    } else {
+      res.status(404).json({ error: 'No users found in teams' });
+    }
+  } catch (error) {
+    console.error('Failed to fetch users:', error);
+    res.status(500).json({ error: 'Failed to fetch users' });
+  }
+};
