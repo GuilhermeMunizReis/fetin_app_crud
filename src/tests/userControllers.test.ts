@@ -1,5 +1,4 @@
-import { describe, it, expect} from 'vitest';
-import { vi } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { Request, Response } from 'express';
 import { getUsers, getUserByName, getStudentTeam, createUser } from '../controller/userControllers/userController';
 import { query } from '../db'; // Certifique-se de ajustar o caminho
@@ -10,7 +9,7 @@ describe('User Controllers', () => {
   afterEach(() => {
     vi.clearAllMocks();
   });
-
+ 
   it('should fetch all users', async () => {
     const req = {} as Request;
     const res = {
@@ -18,7 +17,7 @@ describe('User Controllers', () => {
       json: vi.fn(),
     } as unknown as Response;
 
-    (query as vi.mock).mockResolvedValueOnce({ rows: [{ id: 1, name: 'Alice' }] });
+    (query as  vi.mock).mockResolvedValueOnce({ rows: [{ id: 1, name: 'Alice' }] });
 
     await getUsers(req, res);
 
@@ -33,7 +32,7 @@ describe('User Controllers', () => {
       json: vi.fn(),
     } as unknown as Response;
 
-    (query as vi.Mock).mockResolvedValueOnce({ rows: [] });
+    (query as vi.mock).mockResolvedValueOnce({ rows: [] });
 
     await getUsers(req, res);
 
@@ -48,7 +47,7 @@ describe('User Controllers', () => {
       json: vi.fn(),
     } as unknown as Response;
 
-    (query as vi.Mock).mockResolvedValueOnce({ rows: [{ id: 1, name: 'Alice' }] });
+    (query as vi.mock).mockResolvedValueOnce({ rows: [{ id: 1, name: 'Alice' }] });
 
     await getUserByName(req, res);
 
@@ -63,7 +62,7 @@ describe('User Controllers', () => {
       json: vi.fn(),
     } as unknown as Response;
 
-    (query as vi.Mock).mockResolvedValueOnce({ rows: [] });
+    (query as vi.mock).mockResolvedValueOnce({ rows: [] });
 
     await getUserByName(req, res);
 
@@ -78,7 +77,7 @@ describe('User Controllers', () => {
       json: vi.fn(),
     } as unknown as Response;
 
-    (query as vi.Mock).mockResolvedValueOnce({ rows: [{ id: 1, name: 'Alice', team_id: 1 }] });
+    (query as vi.mock).mockResolvedValueOnce({ rows: [{ id: 1, name: 'Alice', team_id: 1 }] });
 
     await getStudentTeam(req, res);
 
@@ -93,7 +92,7 @@ describe('User Controllers', () => {
       json: vi.fn(),
     } as unknown as Response;
 
-    (query as vi.Mock).mockResolvedValueOnce({ rows: [] });
+    (query as vi.mock).mockResolvedValueOnce({ rows: [] });
 
     await getStudentTeam(req, res);
 
@@ -129,7 +128,7 @@ describe('User Controllers', () => {
       role: 'student'
     };
 
-    (query as vi.Mock).mockResolvedValueOnce({ rows: [newUser] });
+    (query as vi.mock).mockResolvedValueOnce({ rows: [newUser] });
 
     await createUser(req, res);
 
@@ -155,7 +154,7 @@ describe('User Controllers', () => {
       json: vi.fn(),
     } as unknown as Response;
 
-    (query as vi.Mock).mockRejectedValueOnce(new Error('Failed to create user'));
+    (query as vi.mock).mockRejectedValueOnce(new Error('Failed to create user'));
 
     await createUser(req, res);
 

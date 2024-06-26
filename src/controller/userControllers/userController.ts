@@ -22,12 +22,12 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
 export const getUserByName = async (req: Request, res: Response): Promise<void> => {
   const userName: string = req.params.name; 
   const selectQuery = `
-  SELECT * FROM fetin_app."Student" 
+  SELECT name FROM fetin_app."Student" 
   WHERE name = '{$1}'
   `;
 
   try {
-    const result = await pool.query(selectQuery, [userName]);
+    const result = await pool.query(selectQuery, ['[Alice]']);
     const users: User[] = result.rows;
     res.status(500).json({ error: 'Failed to fetch users', userName });
     if (users.length > 0) {
