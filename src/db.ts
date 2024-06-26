@@ -6,6 +6,9 @@ const pool = new Pool({
   password: 'SVe9tNDQbGT8',
   database: 'verceldb',
   port: 5432, // Porta padrão do PostgreSQL
+  ssl: {
+    rejectUnauthorized: false // Se estiver usando um certificado autoassinado, defina isso como false
+  }
 });
 
 export const query = (text: string, params?: any[]) => {

@@ -3,7 +3,7 @@ import { query } from '../db';
 import { User } from '../models/User';
 
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
-  const result = await query('SELECT * FROM users');
+  const result = await query('SELECT * FROM fetin_app."Student"');
   const users: User[] = result.rows;
   if (result != null){
     res.status(200).json(users);
